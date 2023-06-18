@@ -11,11 +11,7 @@ import {
   projRoot,
   writeJson,
 } from '@farst/build-utils'
-import {
-  REPO_BRANCH,
-  REPO_NAME,
-  REPO_OWNER,
-} from '@farst/build-constants'
+import { REPO_BRANCH, REPO_NAME, REPO_OWNER } from '@farst/build-constants'
 
 interface FetchOption {
   key: string
