@@ -38,17 +38,18 @@
     "docs:crowdin-credentials": "pnpm run -C docs crowdin-credentials",
     "stub": "pnpm run -r --parallel stub",
     "prepare": "husky install",
-    "postinstall": "pnpm stub && concurrently \"pnpm gen:version\" \"pnpm run -C internal/metadata dev\""
+    "postinstall": "pnpm stub && concurrently \"pnpm gen:version\" \"pnpm run -C internal/metadata dev\"",
+    "rm:nm": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +"
   },
   "peerDependencies": {
     "vue": "^3.2.0"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.0.6",
     "@farst/components": "workspace:*",
     "@farst/constants": "workspace:*",
     "@farst/directives": "workspace:*",
     "@farst/hooks": "workspace:*",
-    "@element-plus/icons-vue": "^2.0.6",
     "@farst/locale": "workspace:*",
     "@farst/theme-chalk": "workspace:*",
     "@farst/utils": "workspace:*",
@@ -69,10 +70,10 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "@esbuild-kit/cjs-loader": "^2.2.1",
     "@farst/build": "workspace:^0.0.1",
     "@farst/build-utils": "workspace:^0.0.1",
     "@farst/eslint-config": "workspace:*",
-    "@esbuild-kit/cjs-loader": "^2.2.1",
     "@pnpm/find-workspace-packages": "^4.0.16",
     "@pnpm/logger": "^4.0.0",
     "@pnpm/types": "^8.4.0",
