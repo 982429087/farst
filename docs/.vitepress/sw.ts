@@ -10,7 +10,7 @@ const defaultLang = manifest.some((item) => {
   return item.url.includes(navigator.language)
 })
   ? navigator.language
-  : 'en-US'
+  : 'zh-CN'
 
 let userPreferredLang = ''
 let cacheEntries: RequestInfo[] = []
