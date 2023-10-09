@@ -17,7 +17,7 @@ lang: zh-CN
 // main.ts
 import { createApp } from 'vue'
 import FarstThree from 'FarstThree'
-import 'farst-three/dist/index.css'
+import 'farst/dist/index.css'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -35,7 +35,7 @@ app.mount('#app')
 {
   "compilerOptions": {
     // ...
-    "types": ["farst-three/global"]
+    "types": ["farst/global"]
   }
 }
 ```
@@ -82,9 +82,9 @@ export default defineConfig({
                 console.log(componentName, epRoot)
                 return {
                   name: componentName,
-                  from: '@farst-three/components',
+                  from: '@farst/components',
                   sideEffects: ['FtScene']
-                  .includes(componentName) ? `@farst-three/components/${kebabCase(componentName.slice(2))}/style/index.ts` : undefined,
+                  .includes(componentName) ? `@farst/components/${kebabCase(componentName.slice(2))}/style/index.ts` : undefined,
                 }
               }
             }

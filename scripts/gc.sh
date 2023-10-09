@@ -68,25 +68,23 @@ const emit = defineEmits(${SMALL_HUMP}Emits)
 EOF
 
 cat > $DIRNAME/src/$INPUT_NAME.ts <<EOF
-import { buildProps, definePropType } from '@farst-three/utils'
+import { buildProps, definePropType } from '@farst/utils'
 import type { ExtractPropTypes } from 'vue'
 import type ${NAME}Component from './$INPUT_NAME.vue'
 
 export const ${SMALL_HUMP}Props = buildProps({
 })
 export const ${SMALL_HUMP}Emits = {
-  load: (e: ${NAME}LoadEvent) => e,
 }
 
-export type ${NAME}LoadEvent = {
-}
+
 export type ${NAME}Emits = typeof ${SMALL_HUMP}Emits
 export type ${NAME}Props = ExtractPropTypes<typeof ${SMALL_HUMP}Props>
 export type ${NAME}Instance = InstanceType<typeof ${NAME}Component>
 EOF
 
 cat <<EOF >"$DIRNAME/index.ts"
-import { withInstall } from '@farst-three/utils'
+import { withInstall } from '@farst/utils'
 import $NAME from './src/$INPUT_NAME.vue'
 
 export const Fa$NAME = withInstall($NAME)
