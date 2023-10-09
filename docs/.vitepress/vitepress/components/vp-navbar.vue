@@ -34,18 +34,19 @@ const currentLink = computed(() => {
     <div class="header-container">
       <div class="logo-container">
         <a :href="currentLink">
-          <img
+          <!-- <img
             class="logo"
             src="/images/element-plus-logo.svg"
             alt="Element Plus Logo"
-          />
+          /> -->
+          farst logo
         </a>
       </div>
       <div class="content">
-        <VPNavbarSearch class="search" :options="theme.agolia" multilang />
+        <!-- <VPNavbarSearch class="search" :options="theme.agolia" multilang /> -->
         <VPNavbarMenu class="menu" />
-        <VPNavbarThemeToggler class="theme-toggler" />
-        <VPNavbarTranslation class="translation" />
+        <!-- <VPNavbarThemeToggler class="theme-toggler" /> -->
+        <!-- <VPNavbarTranslation class="translation" /> -->
         <VPNavbarSocialLinks class="social-links" />
         <VPNavbarHamburger
           :active="fullScreen"

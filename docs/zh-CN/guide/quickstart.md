@@ -1,61 +1,60 @@
 ---
 title: Quick Start
-lang: en-US
+lang: zh-CN
 ---
 
-# Quick Start
+# 快速开始
 
-This section describes how to use Element Plus in your project.
+本节将介绍如何在项目中使用 Farst Three
 
-## Usage
+## 使用
 
-### Full Import
+### 全局注册
 
-If you don’t care about the bundle size so much, it’s more convenient to use full import.
+如果你对打包后的文件大小不是很在乎，那么使用完整导入会更方便。
 
 ```typescript
 // main.ts
 import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
-import 'farst/dist/index.css'
+import FarstThree from 'FarstThree'
+import 'farst-three/dist/index.css'
 import App from './App.vue'
 
 const app = createApp(App)
 
-app.use(ElementPlus)
+app.use(FarstThree)
 app.mount('#app')
 ```
 
-#### Volar support
+#### Volar 支持
 
-If you use volar, please add the global component type definition to `compilerOptions.types` in `tsconfig.json`.
+如果您使用 Volar，请在 tsconfig.json 中通过 compilerOptions.type 指定全局组件类型。
 
 ```json
 // tsconfig.json
 {
   "compilerOptions": {
     // ...
-    "types": ["farst/global"]
+    "types": ["farst-three/global"]
   }
 }
 ```
 
-### On-demand Import
+### 按需导入
 
-You need to use an additional plugin to import components you used.
+您需要使用额外的插件来导入要使用的组件。
 
-#### Auto import <el-tag type="primary" style="vertical-align: middle;" effect="dark" size="small">Recommend</el-tag>
+#### 自动导入 <el-tag type="primary" style="vertical-align: middle;" effect="dark" size="small">Recommend</el-tag>
 
-First you need to install `unplugin-vue-components` and `unplugin-auto-import`.
+首先你需要安装unplugin-vue-components 和 unplugin-auto-import这两款插件
 
 ```shell
 npm install -D unplugin-vue-components unplugin-auto-import
 ```
 
-Then add the code below into your `Vite` or `Webpack` config file.
 
 ##### Vite
-
+然后把下列代码插入到你的 Vite 的配置文件中
 ```ts
 // vite.config.ts
 import { defineConfig } from 'vite'
@@ -68,164 +67,32 @@ export default defineConfig({
   plugins: [
     // ...
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+        include: `${__dirname}/**`,
+        resolvers: [
+          ElementPlusResolver({
+            importStyle: 'sass',
+          }),
+          {
+            type: 'component',
+            resolve: (componentName: string) => {
+              if (componentName.startsWith('Ft')) {
+                console.log(componentName, epRoot)
+                return {
+                  name: componentName,
+                  from: '@farst-three/components',
+                  sideEffects: ['FtScene']
+                  .includes(componentName) ? `@farst-three/components/${kebabCase(componentName.slice(2))}/style/index.ts` : undefined,
+                }
+              }
+            }
+          }
+        ],
+        dts: false,
+      }),
   ],
 })
 ```
 
-##### Webpack
-
-```js
-// webpack.config.js
-const AutoImport = require('unplugin-auto-import/webpack')
-const Components = require('unplugin-vue-components/webpack')
-const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
-
-module.exports = {
-  // ...
-  plugins: [
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
-  ],
-}
-```
-
-For more bundlers ([Rollup](https://rollupjs.org/), [Vue CLI](https://cli.vuejs.org/)) and configs please reference [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components#installation) and [unplugin-auto-import](https://github.com/antfu/unplugin-auto-import#install).
-
-#### Nuxt
-
-For Nuxt users, you only need to install `@farst/nuxt`.
-
-```shell
-npm install -D @farst/nuxt
-```
-
-Then add the code below into your config file.
-
-```ts
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['@farst/nuxt'],
-})
-```
-
-Refer to the [docs](https://github.com/farst/farst-nuxt#readme) for how to configure it.
-
-### Manually import
-
-Element Plus provides out of box [Tree Shaking](https://webpack.js.org/guides/tree-shaking/)
-functionalities based on ES Module.
-
-But you need install [unplugin-farst](https://github.com/farst/unplugin-farst) for style import.
-And refer to the [docs](https://github.com/farst/unplugin-farst#readme) for how to configure it.
-
-> App.vue
-
-```html
-<template>
-  <el-button>I am ElButton</el-button>
-</template>
-<script>
-  import { ElButton } from 'element-plus'
-  export default {
-    components: { ElButton },
-  }
-</script>
-```
-
-```ts
-// vite.config.ts
-import { defineConfig } from 'vite'
-import ElementPlus from 'unplugin-farst/vite'
-
-export default defineConfig({
-  // ...
-  plugins: [ElementPlus()],
-})
-```
-
-:::warning
-
-You need to manually import the styles if you're using `unplugin-farst` and only used the component API.
-
-Example:
-
-```ts
-import 'farst/es/components/message/style/css'
-import { ElMessage } from 'element-plus'
-```
-
-:::
-
-## Starter Template
-
-We provide a [Vite Template](https://github.com/farst/farst-vite-starter).
-
-For Nuxt users we have a [Nuxt Template](https://github.com/farst/farst-nuxt-starter).
-
-For Laravel users we have a [Laravel Template](https://github.com/farst/farst-in-laravel-starter).
-
-## Global Configuration
-
-When registering Element Plus, you can pass a global config object with `size` and
-`zIndex` to set the default `size` for form components, and `zIndex` for
-popup components, the default value for `zIndex` is `2000`.
-
-Full import:
-
-```ts
-import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
-import App from './App.vue'
-
-const app = createApp(App)
-app.use(ElementPlus, { size: 'small', zIndex: 3000 })
-```
-
-On-demand:
-
-```vue
-<template>
-  <el-config-provider :size="size" :z-index="zIndex">
-    <app />
-  </el-config-provider>
-</template>
-
-<script>
-import { defineComponent } from 'vue'
-import { ElConfigProvider } from 'element-plus'
-
-export default defineComponent({
-  components: {
-    ElConfigProvider,
-  },
-  setup() {
-    return {
-      zIndex: 3000,
-      size: 'small',
-    }
-  },
-})
-</script>
-```
-
-## Using Nuxt.js
-
-We can also use [Nuxt.js](https://v3.nuxtjs.org/)：
-
-<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
-  <iframe src="https://glitch.com/edit/#!/nuxt-farst?path=components%2FExamples.vue%3A1%3A0" alt="nuxt-farst on glitch" style="height: 100%; width: 100%; border: 0;"></iframe>
-</div>
-
-## Let's Get Started
-
-You can bootstrap your project from now on. For each components usage, please
-refer to [the individual component documentation](https://farst.org/en-US/component/button.html).
