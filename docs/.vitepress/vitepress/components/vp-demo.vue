@@ -17,6 +17,8 @@ const props = defineProps<{
   path: string
   rawSource: string
   description?: string
+  rawTabsSource: string
+  tabs: string[]
 }>()
 
 const vm = getCurrentInstance()!
@@ -73,6 +75,28 @@ const copyCode = async () => {
     $message.error(e.message)
   }
 }
+
+/* tabs  */
+const tabsSource = computed(() => {
+  const jsonStr = decodeURIComponent(props.rawTabsSource)
+  return JSON.parse(jsonStr)
+})
+
+const tabsData = computed(() => {
+  return [
+    {
+      path: props.path,
+      source: decodeURIComponent(props.source),
+    },
+    ...props.tabs.map((item) => {
+      return {
+        path: item,
+        source: tabsSource.value[item],
+      }
+    }),
+  ]
+})
+/* tabs end */
 </script>
 
 <template>
@@ -167,7 +191,12 @@ const copyCode = async () => {
       </div>
 
       <ElCollapseTransition>
-        <SourceCode v-show="sourceVisible" :source="source" />
+        <VpTabsSourceCode
+          v-if="tabsData.length > 1"
+          v-show="sourceVisible"
+          :data="tabsData"
+        />
+        <SourceCode v-else v-show="sourceVisible" :source="source" />
       </ElCollapseTransition>
 
       <Transition name="el-fade-in-linear">
